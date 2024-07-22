@@ -1,24 +1,45 @@
-# behaviortree
+# BehaviorTree
 
-behavior tree implementation in java.
-It can decode encode and decode nodes from json.
+A Java implementation of a behavior tree framework. This project supports encoding and decoding nodes from JSON, enabling flexible behavior tree configurations.
 
-# Nodes
-Node can return SUCCESS, FAILURE and RUNNING. To implement node you need to implement Node.java, there is 3 important implementations. First is IONode.java, second is Decorator.java, and last is FlowController.class, all of them are abstract.
-### IONode
-IONode is special node that can declare inputs and outputs that can be used in json. Use @Input and @Output annotations when declaring fields. In json you can specify additional `output` and `input` object that holds names and values of variables.
-### Decorator
-Decorator is node that have one input and one output, can be used for changing return value of node. Currentl there is one implementation of it. InverterDecorator.java
-### FlowController
-FlowController is node that have childrens. FlowController have three implementations. SelectorFlow.java, SequenceFlow.java and SequenceFlowWithMemory.java. In json you can specify additional `childrens` array that holds nodes that will be executed.
+## Overview
 
+Behavior Trees (BTs) are hierarchical models used for decision-making in AI and other areas. In this implementation, nodes return one of three states: `SUCCESS`, `FAILURE`, or `RUNNING`. To define and use nodes, implement the `Node.java` interface.
 
-# Json
-Nodes can be decoded from json. Json is staring from one node. Use FlowControllers and other Nodes to create behavior trees.
-#### Example:
-```
+### Node Types
+
+There are three primary types of nodes to be aware of:
+
+1. **IONode**
+2. **Decorator**
+3. **FlowController**
+
+#### IONode
+
+`IONode` is a specialized node that can declare inputs and outputs used in JSON configurations. Use the `@Input` and `@Output` annotations to define fields. In your JSON configuration, you can specify `input` and `output` objects that hold names and values of these variables.
+
+#### Decorator
+
+A `Decorator` node has one input and one output. It is used to modify the return value of another node. Currently, the implementation includes:
+- `InverterDecorator.java`: Inverts the result of the child node.
+
+#### FlowController
+
+A `FlowController` node manages child nodes and determines the order of execution. There are three implementations:
+- `SelectorFlow.java`
+- `SequenceFlow.java`
+- `SequenceFlowWithMemory.java`
+
+In JSON, you specify the `children` array, which contains the nodes to be executed by the `FlowController`.
+
+## JSON Configuration
+
+Nodes can be decoded from JSON to create behavior trees. The JSON representation starts with a root node and includes definitions for child nodes as needed.
+
+### Example
+```json
 {
-  "childrens": [
+  "children": [
     {
       "output": {
         "outputValue": "{some_value}"
@@ -38,4 +59,30 @@ Nodes can be decoded from json. Json is staring from one node. Use FlowControlle
   "type": "SequenceFlow"
 }
 ```
-In example above there is declaration of SequenceFlow with two children of TestNode3 and TestNode4, this nodes are dummy nodes and don't do any important work(see EncoderDecoderBehaviorTreeTest.java). TestNode3 in java code have declared varible outputValue of String, TestNode4 have declared someInput of same type, beacuse they are extending IONode they can use @Input and @Output adnotations.
+
+## Getting Started
+
+1. **Setup:**
+   - Ensure you have [Java](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) and [Maven](https://maven.apache.org/download.cgi) installed.
+   - Clone the repository using Git:
+     ```bash
+     git clone <repository-url>
+     ```
+   - Navigate to the project directory:
+     ```bash
+     cd <project-directory>
+     ```
+
+2. **Build the Project:**
+   - Use Maven to build the project:
+     ```bash
+     mvn clean install
+     ```
+
+3. **Define Nodes:**
+   - Implement your custom nodes by extending `IONode`, `Decorator`, or `FlowController`.
+
+4. **Configure JSON:**
+   - Create JSON files to define your behavior trees. Use the provided methods to decode and execute them.
+
+For detailed usage and advanced configurations, please refer to the project's documentation and source code.
